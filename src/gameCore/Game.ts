@@ -33,8 +33,10 @@ class Game {
 
     console.log("game inited");
 
-    this.background = new Background(this.bgCtx);
-    this.bird = new Bird(this.birdsCtx, this.world);
+    this.background = new Background(this.bgCtx, this.world);
+    this.bird = new Bird(this.birdsCtx, this.world, this.engine);
+
+    this.initHandlers();
   }
 
   setSize(canvas: HTMLCanvasElement) {
@@ -56,6 +58,26 @@ class Game {
 
     this.bird?.drawBird();
     window.requestAnimationFrame(() => this.animate());
+  }
+
+  handlePressSpace() {
+    console.log("space presed");
+
+    this.bird?.fly();
+  }
+
+  handleKeyDown(event: KeyboardEvent) {
+    switch (event.code) {
+      case "Space": {
+        this.handlePressSpace();
+      }
+    }
+  }
+
+  initHandlers() {
+    window.addEventListener("keydown", (event) =>
+      this.handleKeyDown.call(this, event)
+    );
   }
 }
 

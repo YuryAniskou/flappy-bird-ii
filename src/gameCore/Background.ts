@@ -1,18 +1,32 @@
+import { World, Bodies } from "matter-js";
 class Background {
+  world: World;
   ctx: CanvasRenderingContext2D;
   groundHeight: number = 100;
   groundColor: string = "rgb(135, 100, 47)";
   skyColor: string = "rgb(81, 153, 224)";
 
-  private init() {
+  constructor(ctx: CanvasRenderingContext2D, world: World) {
+    this.world = world;
+    this.ctx = ctx;
+
     this.drawSky();
+    this.addGround();
     this.drawGround();
   }
 
-  constructor(ctx: CanvasRenderingContext2D) {
-    this.ctx = ctx;
+  private addGround() {
+    const { height, width } = this.ctx.canvas;
 
-    this.init();
+    const ground = Bodies.rectangle(
+      0,
+      height - this.groundHeight / 2,
+      width,
+      this.groundHeight
+    );
+    ground.isStatic = true;
+
+    World.add(this.world, ground);
   }
 
   private drawSky() {
